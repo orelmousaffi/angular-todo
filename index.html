@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app='toDoApp'>
+<head>
+	<title>To Do App</title>
+
+	<!-- Include all CSS !-->
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+
+	<!-- Include Angular JS !-->
+	<script type="text/javascript" src="js/angular/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular/todoApp.js"></script>
+</head>
+<body ng-controller="toDoCtrl">
+	<div class="container">
+		<div class="row">
+			<div class="page-header">
+				<h1>{{todo.user}}'s To Do List</h1>
+				<span class="label label-primary" 
+					ng-class="warningLevel()">
+					Total Completed: {{incompleteCount()}}
+				</span>
+			</div>
+
+			<div class="panel">
+				<div class="input-group">
+					<input class="form-control" ng-model="itemDescription"/>
+					<span class="input-group-btn">
+						<button class="btn btn-primary" ng-click="addNewItem(itemDescription)">Add</button>
+					</span>
+				</div>
+
+				<table class="table table-striped">
+					<thead>
+						<th>Description</th>
+						<th>Completed</th>
+					</thead>
+						<tr ng-repeat="item in todo.items">
+							<td>{{item.description}}</td>
+							<td><input type="checkbox" ng-model="item.completed"></input></td>
+						</tr>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
