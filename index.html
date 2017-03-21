@@ -18,7 +18,7 @@
 				<h1>{{todo.user}}'s To Do List</h1>
 				<span class="label label-primary" 
 					ng-class="warningLevel()">
-					Total Completed: {{incompleteCount()}}
+					Total To Do: {{incompleteCount()}}
 				</span>
 			</div>
 
@@ -35,13 +35,18 @@
 						<th>Description</th>
 						<th>Completed</th>
 					</thead>
-						<tr ng-repeat="item in todo.items">
+						<tr ng-repeat="item in todo.items | checkItems:showComplete | orderBy: 'description'">
 							<td>{{item.description}}</td>
 							<td><input type="checkbox" ng-model="item.completed"></input></td>
 						</tr>
 					<tbody>
 					</tbody>
 				</table>
+				<hr/>
+				
+				<div class="checkbox-inline">
+					<label><input type="checkbox" ng-model="showComplete"/> Show Complete </label>
+				</div>
 			</div>
 		</div>
 	</div>

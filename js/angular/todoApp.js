@@ -1,30 +1,26 @@
 var model = {
-	user : "Or-el",
-	items : [
-		{ 
-			description : "Walk the dog", 
-			completed : false 
-		},
-		{ 
-			description : "Watch TV",
-			completed : true
-		},
-		{
-			description : "Play video games",
-			completed : false
-		},
-		{
-			description : "Clean my room",
-			completed : false
-		},
-		{
-			description : "Play music",
-			completed : true
-		}
-	]
+	user : "Or-el"
 };
 
 var toDoApp = angular.module("toDoApp", []);
+
+toDoApp.run(function($http) {
+	$http.get("data/items-list.json").then(function(response) {
+		model.items = response.data;
+	});
+});
+
+toDoApp.filter("checkItems", function() {
+	return function(items, showComplete) {
+		var results = [];
+		angular.forEach(items, function(item) {
+			if (!item.completed || showComplete) {
+				results.push(item);
+			}
+		});
+		return results;
+	}
+});
 
 toDoApp.controller("toDoCtrl", function($scope) {
 	$scope.todo = model;
@@ -33,17 +29,17 @@ toDoApp.controller("toDoCtrl", function($scope) {
 		var count = 0;
 
 		angular.forEach($scope.todo.items, function(nextItem) {
-			count += (nextItem.completed) ? 1 : 0;
+			count += (!nextItem.completed) ? 1 : 0;
 		});
 
 		return count;
 	};
 
 	$scope.warningLevel = function() {
-		var labelClass = "label-danger";
+		var labelClass = "label-success";
 		
 		if ($scope.incompleteCount() > 0) {
-			labelClass = $scope.incompleteCount() < 3 ? "label-warning" : "label-success";
+			labelClass = $scope.incompleteCount() > 3 ? "label-danger" : "label-warning";
 		}
 
 		return labelClass;
@@ -58,3 +54,4 @@ toDoApp.controller("toDoCtrl", function($scope) {
 		}
 	};
 });
+
